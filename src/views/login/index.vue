@@ -31,7 +31,7 @@ export default {
     return {
       // 登陆信息
       loginForm: {
-        mobile: '15722222222',
+        mobile: '13911111111',
         code: '246810'
       },
       // 错误信息
@@ -53,7 +53,11 @@ export default {
           try {
             let res = await apiLogin(this.loginForm)
             this.$store.commit('setUser', res.data.data)
-            this.$router.push('/home')
+            if (this.$route.path === '/login') {
+              this.$router.push('/home')
+            } else {
+              this.$router.back()
+            }
             this.$toast.success('登录成功')
           } catch {
             this.$toast.fail('登录失败')
@@ -75,7 +79,12 @@ export default {
       // 定义一个数组，用来保存手机号和验证码返回的结果，如果两个都是true ,则验证通过，否则验证不通过
       let arr = []
       // 验证手机号
-      if (this.loginForm.mobile.trim().length !== 11 || /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.loginForm.mobile.trim()) !== true) {
+      if (
+        this.loginForm.mobile.trim().length !== 11 ||
+        /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(
+          this.loginForm.mobile.trim()
+        ) !== true
+      ) {
         this.errorMsg.mobile = '请输入正确手机号'
         arr.push(false)
       } else {
